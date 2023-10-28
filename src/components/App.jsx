@@ -1,3 +1,7 @@
+import { Product } from './Product';
+import Section from './Section/Section';
+import css from './App.module.css';
+
 const productData = [
   {
     id: '3',
@@ -23,44 +27,25 @@ const productData = [
 
 export const App = () => {
   return (
-    <section>
-      <h1>Hello WORLD🙂</h1>
+    <div className={css.product}>
+      <Section>
+        <h1>Hello WORLD🙂</h1>
+      </Section>
 
-      {productData.map(product => {
-        return (
-          <Product
-            key={product.id}
-            title={product.title}
-            price={product.price}
-            discount={product.discount}
-          />
-        );
-      })}
-
-      {/* <Product title="Tacos with lime" price="10.99" discount={null} />
-      <Product title="Tacos L" price="7.66" discount={1.5} />
-      <Product title="Tacos S" price="4.55" discount={2.33} /> */}
-    </section>
-  );
-};
-
-const Product = ({ title, price, discount }) => {
-  return (
-    <div>
-      <img
-        src="https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg?dpr=2&h=480&w=640"
-        alt="TACOS WITH LIME"
-        width="640"
-      />
-
-      <h2>{title}</h2>
-      {discount ? (
-        <h3>Discount: {discount}$</h3>
-      ) : (
-        <p>Sorry, but discount on this type of product has expired!</p>
-      )}
-      <p>Price: {price}$</p>
-      <button type="button">Add to card</button>
+      <Section title="Product List">
+        <div className={css.productList}>
+          {productData.map(product => {
+            return (
+              <Product
+                key={product.id}
+                title={product.title}
+                price={product.price}
+                discount={product.discount}
+              />
+            );
+          })}
+        </div>
+      </Section>
     </div>
   );
 };
