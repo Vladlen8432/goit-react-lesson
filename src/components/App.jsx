@@ -2,6 +2,8 @@ import { Product } from './Product';
 import Section from './Section/Section';
 import css from './App.module.css';
 import { Component } from 'react';
+import ProductForm from './ProducrForm/ProductForm';
+import { nanoid } from 'nanoid';
 
 const productData = [
   {
@@ -28,30 +30,35 @@ const productData = [
 
 export class App extends Component {
   state = {
-    counterValue: 0,
     products: productData,
-    showMessage: false,
-    currentPage: 1,
-  };
-
-  handleIncrement = () => {
-    // this.state.counterValue = this.state.counterValue + 1;❌
-    this.setState({ counterValue: this.state.counterValue + 1 });
-  };
-
-  handleDecrement = () => {
-    if (this.state.counterValue === 0) {
-      alert('Counter value is already decremented!');
-      return;
-    }
-
-    this.setState({ counterValue: this.state.counterValue - 1 });
   };
 
   handleDeleteProduct = productId => {
     this.setState({
       products: this.state.products.filter(product => product.id !== productId),
     });
+  };
+
+  handleAddProduct = productData => {
+    console.log('productData: ', productData);
+
+    const hasDuplicates = this.state.products.some(
+      product => product.title === productData.title
+    );
+
+    if (hasDuplicates) {
+      alert(`Ops, product with title '${productData.title}' already exist`);
+      return;
+    }
+
+    const finalProduct = {
+      ...productData,
+      id: nanoid(),
+    };
+
+    this.setState(prevState => ({
+      products: [...this.state.products, finalProduct],
+    }));
   };
 
   render() {
@@ -63,16 +70,10 @@ export class App extends Component {
       <div className={css.product}>
         <Section>
           <h1>Hello WORLD🙂</h1>
-          <button onClick={this.handleDecrement}>Decrement</button>
-          <b>Counter value: {this.state.counterValue}</b>
-          <button onClick={this.handleIncrement}>Increment</button>
+        </Section>
 
-          {this.state.counterValue > 5 && (
-            <div>
-              Congratulation! You won the discount promocode 20% OFF -
-              #ROLD94B🍕
-            </div>
-          )}
+        <Section title="Add product Form">
+          <ProductForm handleAddProduct={this.handleAddProduct} />
         </Section>
 
         <Section title="Product List">
